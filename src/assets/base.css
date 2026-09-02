@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --navy-900: #0a1f36;
+  --navy-700: #11345a;
+  --navy-500: #1f5f92;
+  --navy-300: #7c9bbc;
+  --navy-100: #c9d6e4;
+  --navy-50: #edf2f7;
+  --paper: #f6f7fa;
+  --surface: #ffffff;
+  --line: #dde3eb;
+  --text: #0e1b2a;
+  --muted: #5c6673;
+  --teal: #14b88a;
+  --teal-dark: #087659;
+  --teal-soft: #e5f7f1;
+  --amber: #e9a13b;
+  --alert: #d7484a;
+  --alert-soft: #fdeced;
+  --shadow: 0 1px 2px rgba(10, 31, 54, 0.06), 0 8px 24px rgba(10, 31, 54, 0.05);
+  --shadow-strong: 0 2px 4px rgba(10, 31, 54, 0.08), 0 12px 30px rgba(10, 31, 54, 0.08);
+  --f-sans: 'IBM Plex Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--text);
+  background: var(--paper);
+  font-family: var(--f-sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: var(--paper);
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--navy-100);
+  color: var(--navy-900);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
