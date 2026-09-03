@@ -7,4 +7,5 @@ import AppHeader from '@/components/AppHeader.vue'
   <router-view />
 </template>
 
-<style scoped></style>
+<script setup>
+</script>
