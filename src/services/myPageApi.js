@@ -1,3 +1,5 @@
+import api from '@/api/index.js'
+
 const IS_MOCK_PREVIEW =
   import.meta.env.DEV &&
   typeof window !== 'undefined' &&
@@ -8,7 +10,6 @@ const RECOMMEND_SERVICE_URL = (import.meta.env.VITE_RECOMMEND_SERVICE_URL ?? '/a
   /\/$/,
   '',
 )
-const ACCESS_TOKEN_STORAGE_KEY = import.meta.env.VITE_ACCESS_TOKEN_STORAGE_KEY ?? 'accessToken'
 
 /**
  * @typedef {'STUDENT' | 'INSTRUCTOR'} UserRole
@@ -19,47 +20,12 @@ const ACCESS_TOKEN_STORAGE_KEY = import.meta.env.VITE_ACCESS_TOKEN_STORAGE_KEY ?
  * @typedef {{ userId: number, recommendedCourses: Course[], basedOnCategory: CourseCategory|null, message: string }} RecommendResponse
  */
 
-function getAccessToken() {
-  if (typeof window === 'undefined') return ''
-
-  try {
-    const storedToken =
-      window.sessionStorage.getItem(ACCESS_TOKEN_STORAGE_KEY) ??
-      window.localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY)
-
-    return storedToken?.replace(/^"|"$/g, '') ?? ''
-  } catch {
-    return ''
-  }
-}
-
 async function getJson(url) {
-  const accessToken = getAccessToken()
-  const headers = { Accept: 'application/json' }
-
-  if (accessToken) {
-    headers.Authorization = /^Bearer\s/i.test(accessToken)
-      ? accessToken
-      : `Bearer ${accessToken}`
-  }
-
-  const response = await fetch(url, {
-    method: 'GET',
-    credentials: 'include',
-    headers,
-  })
-
-  const payload = await response.json().catch(() => null)
-
-  if (!response.ok) {
-    throw new Error(payload?.message || `요청을 완료하지 못했습니다. (${response.status})`)
-  }
-
-  if (payload === null) {
+  const response = await api.get(url)
+  if (response.data == null) {
     throw new Error('서버 응답을 확인할 수 없습니다.')
   }
-
-  return payload
+  return response.data
 }
 
 /** @returns {Promise<UserApiResponse>} */

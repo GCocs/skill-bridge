@@ -67,10 +67,9 @@ const categoryLabels = {
 
     <div v-else-if="recommendation?.recommendedCourses?.length" class="course-list">
       <CourseCard
-        v-for="(course, index) in recommendation.recommendedCourses"
+        v-for="course in recommendation.recommendedCourses"
         :key="course.id"
         :course="course"
-        :index="index"
       />
     </div>
 

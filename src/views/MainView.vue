@@ -218,6 +218,7 @@
 
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import CourseCard from '@/components/CourseCard.vue'
 import { useCourseStore } from '@/store/course.js'
 import logoLockup from '@/assets/logo-lockup.png'
@@ -226,7 +227,7 @@ import logoMark from '@/assets/logo-mark.png'
 
 const courseStore = useCourseStore()
 
-const { categories, loading } = courseStore
+const { categories, loading } = storeToRefs(courseStore)
 
 const selectedCategory = computed(() => courseStore.selectedCategory)
 const popularCourses = computed(() => courseStore.popularCourses)

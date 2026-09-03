@@ -1,7 +1,6 @@
 <script setup>
 import { computed, onMounted } from 'vue'
 
-import AppHeader from '@/components/AppHeader.vue'
 import CourseRecommendations from '@/components/CourseRecommendations.vue'
 import UserInfoCard from '@/components/UserInfoCard.vue'
 import { useMyPage } from '@/composables/useMyPage'
@@ -31,8 +30,6 @@ onMounted(loadMyPage)
 
 <template>
   <div class="my-page">
-    <AppHeader :user="user" />
-
     <main>
       <div v-if="isProfileLoading && !user" class="loading-view" aria-live="polite">
         <span class="brand-loader" aria-hidden="true"><i></i><i></i></span>

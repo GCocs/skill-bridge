@@ -1,8 +1,11 @@
 import { computed, ref } from 'vue'
 
 import { getCurrentUser, getRecommendations } from '@/services/myPageApi'
+import { useAuthStore } from '@/store/auth.js'
 
 export function useMyPage() {
+  const auth = useAuthStore()
+  const isMockPreview = window.location.pathname.replace(/\/$/, '') === '/mypage/mock'
   const user = ref(null)
   const recommendation = ref(null)
   const isProfileLoading = ref(true)
@@ -34,6 +37,12 @@ export function useMyPage() {
     recommendation.value = null
 
     try {
+      if (!isMockPreview && auth.user) {
+        user.value = auth.user
+        await loadRecommendations()
+        return
+      }
+
       const response = await getCurrentUser()
 
       if (!response.success || !response.data) {
@@ -41,6 +50,9 @@ export function useMyPage() {
       }
 
       user.value = response.data
+      if (!isMockPreview) {
+        auth.setUser(response.data)
+      }
       await loadRecommendations()
     } catch (error) {
       profileError.value = error instanceof Error ? error.message : '내 정보를 불러오지 못했습니다.'

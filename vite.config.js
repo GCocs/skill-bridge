@@ -19,25 +19,13 @@ export default defineConfig(({ mode }) => {
       port: 3000,
       strictPort: true,
       proxy: {
-        '/api/users': {
-          target: env.USER_SERVICE_TARGET || 'http://localhost:8081',
+        '/api': {
+          // 개발 중에도 모든 API 요청은 Gateway를 거친다.
+          target: env.VITE_API_BASE_URL || 'http://localhost:8080',
           changeOrigin: true,
-        },
-        '/api/recommend': {
-          target: env.RECOMMEND_SERVICE_TARGET || 'http://localhost:8085',
-          changeOrigin: true,
+          secure: false,
         },
       },
     },
-  },
-  server: {
-    port: 3000,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        secure: false
-      }
-    }
   }
 })

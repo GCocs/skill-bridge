@@ -5,7 +5,7 @@
       <span v-if="enrolled" class="enrolled-badge">신청함</span>
     </div>
     <div class="card-body">
-      <span class="cat-pill" :style="{ background: categoryColor }">{{ course.category }}</span>
+      <span class="cat-pill" :style="{ background: categoryColor }">{{ categoryLabel }}</span>
       <h3 class="card-title">{{ course.title }}</h3>
       <p class="card-desc">{{ course.description || '설명이 없습니다.' }}</p>
       <div class="card-meta">
@@ -35,14 +35,14 @@ import { useCourseStore } from '@/store/course.js'
 
 const props = defineProps({
   course: { type: Object, required: true },
-  // 로그인(signIn 브랜치) merge 전까지는 항상 false. merge 후 실제 수강 여부로 연결 예정.
   enrolled: { type: Boolean, default: false }
 })
 
 const courseStore = useCourseStore()
 
-const categoryColor = computed(() => courseStore.categoryColorMap[props.course.category] || '#5C6673')
-const categoryIconPath = computed(() => courseStore.categoryIconPathMap[props.course.category] || '')
+const categoryLabel = computed(() => courseStore.normalizeCategory(props.course.category) || '기타')
+const categoryColor = computed(() => courseStore.categoryColorMap[categoryLabel.value] || '#5C6673')
+const categoryIconPath = computed(() => courseStore.categoryIconPathMap[categoryLabel.value] || '')
 const formattedPrice = computed(() => Number(props.course.price ?? 0).toLocaleString())
 const enrollmentCountLabel = computed(() => Number(props.course.enrollmentCount ?? 0).toLocaleString())
 </script>
