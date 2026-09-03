@@ -6,7 +6,7 @@ const routes = [
     path: '/',
     name: 'Main',
     component: () => import('@/views/MainView.vue'),
-    meta: { title: '홈' },
+    meta: { title: '홈', showCourseSearch: true },
   },
   {
     path: '/login',
@@ -24,7 +24,7 @@ const routes = [
     path: '/courses',
     name: 'CourseList',
     component: () => import('@/views/CourseListView.vue'),
-    meta: { requiresAuth: true, title: '강의 목록' },
+    meta: { requiresAuth: true, title: '강의 목록', showCourseSearch: true },
   },
   {
     path: '/courses/new',

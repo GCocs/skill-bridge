@@ -14,7 +14,7 @@ const props = defineProps({
 
 const roleLabel = computed(() => (props.user.role === 'STUDENT' ? '수강생' : '강사'))
 const roleDescription = computed(() =>
-  props.user.role === 'STUDENT' ? '새로운 배움을 이어가는 중' : '배움의 경험을 설계하는 전문가',
+  props.user.role === 'STUDENT' ? 'SkillBridge 수강생 계정' : 'SkillBridge 강사 계정',
 )
 const initials = computed(() => props.user.name.slice(0, 2))
 const joinedAt = computed(() =>
@@ -33,7 +33,7 @@ const joinedAt = computed(() =>
   >
     <div class="card-heading">
       <div>
-        <p class="section-kicker">PROFILE</p>
+        <p class="section-label">계정 정보</p>
         <h2 id="profile-title">내 정보</h2>
       </div>
       <span class="role-pill">{{ roleLabel }}</span>
@@ -82,14 +82,9 @@ const joinedAt = computed(() =>
     </dl>
 
     <div v-if="wide" class="instructor-note">
-      <span class="note-mark" aria-hidden="true">
-        <svg viewBox="0 0 32 32"><path d="m7 17 6 6 12-14M7 9h8" /></svg>
-      </span>
-      <div>
-        <p class="section-kicker">INSTRUCTOR ACCOUNT</p>
-        <strong>전문 지식을 배움으로 연결하세요.</strong>
-        <span>Skill Bridge와 함께한 지 {{ joinedAt }}부터</span>
-      </div>
+      <p class="section-label">강의 제작 TIP</p>
+      <strong>수강생이 얻게 될 변화를 먼저 알려주세요.</strong>
+      <span>학습 목표와 대상 수강생을 구체적으로 적으면 강의를 더 쉽게 이해할 수 있어요.</span>
     </div>
   </section>
 </template>
@@ -99,7 +94,7 @@ const joinedAt = computed(() =>
   align-self: start;
   padding: 28px;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 16px;
   background: var(--surface);
   box-shadow: var(--shadow);
 }
@@ -110,13 +105,11 @@ const joinedAt = computed(() =>
   justify-content: space-between;
 }
 
-.section-kicker {
+.section-label {
   margin: 0 0 5px;
-  color: var(--muted);
-  font-family: var(--f-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  color: var(--navy-500);
+  font-size: 11px;
+  font-weight: 700;
 }
 
 h2 {
@@ -149,24 +142,13 @@ h2 {
   height: 72px;
   flex: 0 0 auto;
   place-items: center;
-  border-radius: 22px;
-  background: var(--navy-900);
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--navy-700), var(--navy-500));
   color: white;
   font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.04em;
-}
-
-.avatar::after {
-  position: absolute;
-  right: 14px;
-  bottom: 0;
-  width: 24px;
-  height: 2px;
-  background: var(--teal);
-  content: '';
-  transform: rotate(-40deg);
-  transform-origin: right;
+  box-shadow: 0 7px 18px rgba(17, 52, 90, 0.2);
 }
 
 .avatar i {
@@ -175,7 +157,7 @@ h2 {
   bottom: -4px;
   width: 14px;
   height: 14px;
-  border: 3px solid var(--surface);
+  border: 3px solid white;
   border-radius: 50%;
   background: var(--teal);
 }
@@ -239,10 +221,6 @@ dd {
   letter-spacing: 0.035em;
 }
 
-.instructor-note {
-  display: none;
-}
-
 .info-card--wide {
   display: grid;
   grid-template-columns: minmax(250px, 0.8fr) minmax(320px, 1.25fr);
@@ -266,37 +244,15 @@ dd {
 }
 
 .info-card--wide .instructor-note {
-  display: flex;
   grid-column: 1 / -1;
   margin: 34px -38px -38px;
   padding: 24px 38px;
-  align-items: center;
-  border-radius: 0 0 9px 9px;
-  background: var(--navy-900);
+  border-radius: 0 0 15px 15px;
+  background: linear-gradient(120deg, var(--navy-900), var(--navy-500));
   color: white;
-  gap: 15px;
 }
 
-.note-mark {
-  display: grid;
-  width: 40px;
-  height: 40px;
-  flex: 0 0 auto;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-}
-
-.note-mark svg {
-  width: 21px;
-  fill: none;
-  stroke: var(--teal);
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 2;
-}
-
-.instructor-note .section-kicker {
+.instructor-note .section-label {
   color: var(--teal);
 }
 
@@ -310,7 +266,7 @@ dd {
 }
 
 .instructor-note span {
-  margin-top: 2px;
+  margin-top: 4px;
   color: var(--navy-100);
   font-size: 12px;
 }

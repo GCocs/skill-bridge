@@ -34,13 +34,12 @@ const categoryLabels = {
   <section class="recommendations" aria-labelledby="recommendation-title" aria-live="polite">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">FOR YOUR NEXT STEP</p>
-        <h2 id="recommendation-title">추천 강의</h2>
+        <p class="section-label">다음 학습을 위해</p>
+        <h2 id="recommendation-title">나를 위한 추천 강의</h2>
       </div>
 
       <div v-if="recommendation" class="recommendation-basis">
-        <span>추천 기준</span>
-        <strong>{{ categoryLabels[recommendation.basedOnCategory] ?? '인기 강의' }}</strong>
+        <strong>{{ categoryLabels[recommendation.basedOnCategory] ?? '인기 강의' }} 추천</strong>
       </div>
     </div>
 
@@ -96,13 +95,11 @@ const categoryLabels = {
   gap: 24px;
 }
 
-.section-kicker {
+.section-label {
   margin: 0 0 5px;
-  color: var(--muted);
-  font-family: var(--f-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  color: var(--navy-500);
+  font-size: 11px;
+  font-weight: 700;
 }
 
 h2 {
@@ -113,39 +110,33 @@ h2 {
 }
 
 .recommendation-basis {
-  text-align: right;
-}
-
-.recommendation-basis span,
-.recommendation-basis strong {
-  display: block;
-}
-
-.recommendation-basis span {
-  margin-bottom: 1px;
-  color: var(--muted);
-  font-family: var(--f-mono);
-  font-size: 9px;
-  letter-spacing: 0.1em;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--navy-50);
 }
 
 .recommendation-basis strong {
   color: var(--navy-500);
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .recommendation-message {
   display: flex;
   margin: -7px 0 20px;
+  padding: 12px 14px;
   align-items: center;
+  border-radius: 10px;
+  background: rgba(237, 242, 247, 0.75);
   color: var(--muted);
-  font-size: 12px;
+  font-size: 12.5px;
   gap: 8px;
 }
 
 .recommendation-message span {
-  width: 18px;
-  height: 1px;
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
   background: var(--teal);
 }
 
@@ -208,7 +199,7 @@ h2 {
   padding: 28px;
   align-items: center;
   border: 1px solid var(--line);
-  border-radius: 9px;
+  border-radius: 16px;
   background: var(--surface);
   gap: 16px;
 }
