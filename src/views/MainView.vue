@@ -333,7 +333,7 @@ onMounted(() => {
   height: 220px;
   background: #1F5F92;
   opacity: .14;
-  bottom: -60px;
+  bottom: 40px;
   right: 26%;
 }
 
