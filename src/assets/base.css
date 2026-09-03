@@ -1,0 +1,20 @@
+/* 전역 CSS 변수 — 브랜드 가이드 토큰 기반 (임시: 디자인 시스템 브랜치가 따로 생기면 그쪽 값으로 정리 예정) */
+:root {
+  --color-border: #DDE3EB;
+  --color-text-primary: #0E1B2A;
+  --color-text-secondary: #5C6673;
+  --color-text-muted: #5C6673;
+  --color-bg-secondary: #EDF2F7;
+  --font-sans: "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --transition: all .15s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+}

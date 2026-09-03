@@ -4,8 +4,8 @@ import { useAuthStore } from '@/store/auth.js'
 const routes = [
   {
     path: '/',
-    name: 'Landing',
-    component: () => import('@/views/LandingView.vue')
+    name: 'main',
+    component: () => import('@/views/MainView.vue')
   },
   {
     path: '/login',
