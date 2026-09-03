@@ -21,7 +21,7 @@
             </svg>
           </button>
         </div>
-        <img :src="logoLockup" alt="SkillBridge" class="hero-logo" />
+        <img :src="heroIllustration" alt="" class="hero-logo" />
       </div>
     </section>
 
@@ -221,6 +221,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import CourseCard from '@/components/CourseCard.vue'
 import { useCourseStore } from '@/store/course.js'
 import logoLockup from '@/assets/logo-lockup.png'
+import heroIllustration from '@/assets/hero-illustration.png'
 import logoMark from '@/assets/logo-mark.png'
 
 const courseStore = useCourseStore()
@@ -341,7 +342,7 @@ onMounted(() => {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 260px;
+  grid-template-columns: 1fr 420px;
   gap: 56px;
   align-items: center;
   padding: 64px 24px 56px;
@@ -646,7 +647,8 @@ onMounted(() => {
     text-align: center;
   }
   .hero-logo {
-    max-width: 200px;
+    max-width: 360px;
+    width: 100%;
     margin: 0 auto;
     order: -1;
   }
