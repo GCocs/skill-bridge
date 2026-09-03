@@ -162,8 +162,9 @@
         <div class="feature-text">
           <h2 class="section-title">왜 SkillBridge인가요</h2>
           <p class="feature-desc">
-            실제 현업 데이터를 기반으로 구성된 과정으로, 우리 팀에 필요한 역량을
-            가장 빠른 길로 채울 수 있습니다.
+            실제 현업 데이터를 기반으로 구성된 과정으로,
+          <br>
+            우리 팀에 필요한 역량을 가장 빠른 길로 채울 수 있습니다.
           </p>
           <ul class="feature-list">
             <li v-for="item in featureItems" :key="item">
