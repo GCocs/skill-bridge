@@ -12,6 +12,13 @@ const courseStore = useCourseStore()
 const { categories, courses, error, loading, selectedCategory, searchQuery } =
   storeToRefs(courseStore)
 
+// role별로 안내 문구를 다르게 — 강사한테 "학습을 시작하세요"는 어색해서
+const pageDescription = computed(() =>
+  auth.user?.role === 'INSTRUCTOR'
+    ? '등록한 과정을 확인하고, 팀에 필요한 새로운 과정을 준비해보세요.'
+    : '필요한 역량을 선택하고 다음 학습을 시작하세요.'
+)
+
 const filteredCourses = computed(() => {
   const query = searchQuery.value.trim().toLowerCase()
   return courses.value.filter((course) => {
@@ -43,7 +50,7 @@ onMounted(() => {
       <div>
         <p class="route-page__eyebrow">LEARNING PATHS</p>
         <h1 class="route-page__title">강의 목록</h1>
-        <p class="route-page__description">필요한 역량을 선택하고 다음 학습을 시작하세요.</p>
+        <p class="route-page__description">{{ pageDescription }}</p>
       </div>
       <router-link
         v-if="auth.user?.role === 'INSTRUCTOR'"
