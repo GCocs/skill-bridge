@@ -32,6 +32,21 @@
     </div>
 
     <main class="main-content">
+      <!-- 강사 전용 과정 등록 진입 배너 -->
+      <section v-if="isInstructor" class="instructor-banner">
+        <div class="instructor-banner-text">
+          <p class="instructor-eyebrow">INSTRUCTOR</p>
+          <h2 class="instructor-title">새로운 과정을 등록해보세요</h2>
+          <p class="instructor-desc">팀에 필요한 역량을 담은 과정을 직접 만들고 공유할 수 있어요.</p>
+        </div>
+        <router-link :to="{ name: 'CourseCreate' }" class="instructor-cta">
+          과정 등록하기
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </router-link>
+      </section>
+
       <!-- 카테고리 탐색 -->
       <section class="category-section">
         <h2 class="section-title">역량 영역별로 살펴보기</h2>
@@ -224,10 +239,16 @@ import { useCourseStore } from '@/store/course.js'
 import logoLockup from '@/assets/logo-lockup.png'
 import heroIllustration from '@/assets/hero-illustration.png'
 import logoMark from '@/assets/logo-mark.png'
+import { useAuthStore } from '@/store/auth.js'
 
 const courseStore = useCourseStore()
+const authStore = useAuthStore()
 
 const { categories, loading } = storeToRefs(courseStore)
+const { user, isAuthenticated } = storeToRefs(authStore)
+
+// 회원가입 시 선택한 역할(STUDENT/INSTRUCTOR) 기준 — LoginView.vue의 registerForm.role 참고
+const isInstructor = computed(() => isAuthenticated.value && user.value?.role === 'INSTRUCTOR')
 
 const selectedCategory = computed(() => courseStore.selectedCategory)
 const popularCourses = computed(() => courseStore.popularCourses)
@@ -466,6 +487,69 @@ onMounted(() => {
 
 .section-header {
   margin-bottom: 18px;
+}
+
+/* 강사 전용 과정 등록 진입 배너 */
+.instructor-banner {
+  margin-bottom: 48px;
+  padding: 32px 40px;
+  border-radius: 20px;
+  background: linear-gradient(120deg, #0A1F36 0%, #1F5F92 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.instructor-eyebrow {
+  margin: 0;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  color: #7C9BBC;
+  text-transform: uppercase;
+}
+.instructor-title {
+  margin: 8px 0 6px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+}
+.instructor-desc {
+  margin: 0;
+  font-size: 14px;
+  color: #C9D6E4;
+}
+.instructor-cta {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: #14B88A;
+  color: #0A1F36;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .15s ease, transform .15s ease;
+}
+.instructor-cta svg {
+  width: 18px;
+  height: 18px;
+}
+.instructor-cta:hover {
+  background: #17CC98;
+  transform: translateY(-1px);
+}
+@media (max-width: 900px) {
+  .instructor-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
 }
 
 /* 카테고리 탐색 */

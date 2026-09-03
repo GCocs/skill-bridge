@@ -3,7 +3,7 @@
     <div class="header-inner">
       <!-- 로고 -->
       <router-link :to="{ name: 'Main' }" class="logo">
-        <img src="@/assets/images/logo/logo-transparent.png" alt="SkillBridge" class="logo-mark" />
+        <img src="/skill-bridge-logo.png" alt="SkillBridge" class="logo-mark" />
       </router-link>
 
       <!-- 검색 -->
@@ -40,7 +40,6 @@
           <router-link :to="{ name: 'MyPage' }" class="user-chip">
             <span class="user-avatar">{{ auth.user?.name?.charAt(0) || '?' }}</span>
             <span class="user-name">{{ auth.user?.name }}</span>
-            <span class="chevron">⌄</span>
           </router-link>
           <button class="btn btn-ghost btn-sm" @click="handleLogout">로그아웃</button>
         </template>
@@ -117,7 +116,7 @@ watch(
   flex-shrink: 0;
 }
 .logo-mark {
-  height: 54px;
+  height: 38px;
   width: auto;
   object-fit: contain;
   flex-shrink: 0;
@@ -234,11 +233,6 @@ watch(
   font-weight: 500;
   color: var(--color-text-primary);
 }
-.chevron {
-  font-size: 12px;
-  color: var(--color-text-muted);
-}
-
 @media (max-width: 900px) {
   .search-box {
     display: none;
