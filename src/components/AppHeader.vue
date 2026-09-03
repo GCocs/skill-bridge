@@ -2,26 +2,42 @@
   <header class="app-header">
     <div class="header-inner">
       <!-- 로고 -->
-      <router-link to="/" class="logo">
+      <router-link :to="{ name: 'Main' }" class="logo">
         <img src="@/assets/images/logo/logo-transparent.png" alt="SkillBridge" class="logo-mark" />
       </router-link>
 
       <!-- 검색 -->
-      <div class="search-box">
+      <form class="search-box" role="search" @submit.prevent="handleSearch">
         <span class="search-icon">⌕</span>
-        <input type="text" placeholder="Search Your course" />
-      </div>
+        <input
+          v-model="searchQuery"
+          type="search"
+          aria-label="강의 검색"
+          placeholder="강의를 검색하세요"
+        />
+      </form>
 
       <!-- 네비게이션 -->
       <nav class="nav-links" v-if="auth.isAuthenticated">
-        <router-link to="/courses" class="nav-link" :class="{ active: $route.path.startsWith('/courses') }">학습경로</router-link>
-        <router-link to="/enrollments" class="nav-link" :class="{ active: $route.path === '/enrollments' }">내 성장현황</router-link>
+        <router-link
+          :to="{ name: 'CourseList' }"
+          class="nav-link"
+          :class="{ active: route.path.startsWith('/courses') }"
+          >학습경로</router-link
+        >
+        <router-link
+          v-if="auth.user?.role === 'STUDENT'"
+          :to="{ name: 'Enrollment' }"
+          class="nav-link"
+          :class="{ active: route.path === '/enrollments' }"
+          >내 성장현황</router-link
+        >
       </nav>
 
       <!-- 우측 액션 -->
       <div class="header-actions">
         <template v-if="auth.isAuthenticated">
-          <router-link to="/mypage" class="user-chip">
+          <router-link :to="{ name: 'MyPage' }" class="user-chip">
             <span class="user-avatar">{{ auth.user?.name?.charAt(0) || '?' }}</span>
             <span class="user-name">{{ auth.user?.name }}</span>
             <span class="chevron">⌄</span>
@@ -29,8 +45,12 @@
           <button class="btn btn-ghost btn-sm" @click="handleLogout">로그아웃</button>
         </template>
         <template v-else>
-          <router-link to="/login" class="btn btn-outline btn-sm">Register</router-link>
-          <router-link to="/login" class="btn btn-dark btn-sm">Login</router-link>
+          <router-link
+            :to="{ name: 'Login', query: { mode: 'register' } }"
+            class="btn btn-outline btn-sm"
+            >Register</router-link
+          >
+          <router-link :to="{ name: 'Login' }" class="btn btn-dark btn-sm">Login</router-link>
         </template>
       </div>
     </div>
@@ -38,16 +58,39 @@
 </template>
 
 <script setup>
+import { computed, watch } from 'vue'
 import { useAuthStore } from '@/store/auth.js'
-import { useRouter } from 'vue-router'
+import { useCourseStore } from '@/store/course.js'
+import { useRoute, useRouter } from 'vue-router'
 
 const auth = useAuthStore()
+const courseStore = useCourseStore()
+const route = useRoute()
 const router = useRouter()
 
-function handleLogout() {
-  auth.logout()
-  router.push('/')
+const searchQuery = computed({
+  get: () => courseStore.searchQuery,
+  set: (value) => courseStore.setSearchQuery(value),
+})
+
+function handleSearch() {
+  const query = searchQuery.value.trim()
+  router.push({ name: 'CourseList', query: query ? { q: query } : {} })
 }
+
+async function handleLogout() {
+  await auth.logout()
+  router.push({ name: 'Main' })
+}
+
+watch(
+  () => route.query.q,
+  (query) => {
+    if (route.name === 'CourseList')
+      courseStore.setSearchQuery(typeof query === 'string' ? query : '')
+  },
+  { immediate: true },
+)
 </script>
 
 <style scoped>
@@ -120,7 +163,7 @@ function handleLogout() {
 }
 .nav-link:hover,
 .nav-link.active {
-  color: #11345A;
+  color: #11345a;
 }
 
 .header-actions {
@@ -141,17 +184,17 @@ function handleLogout() {
   border: 1.5px solid var(--color-border);
 }
 .btn-outline:hover {
-  border-color: #11345A;
-  color: #11345A;
+  border-color: #11345a;
+  color: #11345a;
 }
 .btn-dark {
-  background: #11345A;
+  background: #11345a;
   color: #fff;
-  border: 1.5px solid #11345A;
+  border: 1.5px solid #11345a;
 }
 .btn-dark:hover {
-  background: #1F5F92;
-  border-color: #1F5F92;
+  background: #1f5f92;
+  border-color: #1f5f92;
 }
 .header-actions .btn-ghost {
   color: var(--color-text-secondary);
@@ -167,18 +210,18 @@ function handleLogout() {
   gap: 8px;
   padding: 5px 14px 5px 5px;
   border-radius: 20px;
-  background: #EDF2F7;
+  background: #edf2f7;
   transition: var(--transition);
 }
 .user-chip:hover {
-  background: #C9D6E4;
+  background: #c9d6e4;
 }
 .user-avatar {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: #C9D6E4;
-  color: #11345A;
+  background: #c9d6e4;
+  color: #11345a;
   font-size: 12px;
   font-weight: 700;
   display: flex;

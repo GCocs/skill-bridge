@@ -72,15 +72,14 @@ export const useCourseStore = defineStore('course', () => {
     error.value = null
     try {
       const res = await courseApi.getAll()
-      const rawCourses = Array.isArray(res.data?.data)
-        ? res.data.data
-        : Array.isArray(res.data)
-          ? res.data
-          : []
+      const payload = res.data?.data ?? res.data
+      const rawCourses = Array.isArray(payload)
+        ? payload
+        : (payload?.content ?? payload?.courses ?? payload?.items ?? [])
       courses.value = rawCourses.map(normalizeCourse)
     } catch (e) {
       console.error('[CourseStore] fetchCourses failed:', e)
-      error.value = e.message || '강의 목록을 불러오지 못했습니다.'
+      error.value = e.response?.data?.message || e.message || '강의 목록을 불러오지 못했습니다.'
       courses.value = []
     } finally {
       loading.value = false
