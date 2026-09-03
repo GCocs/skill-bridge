@@ -14,27 +14,12 @@
             백엔드부터 보안까지, 현업 데이터로 구성된 교육 과정으로
             우리 팀에 필요한 스킬을 빠르게 학습하세요.
           </p>
-          <div class="hero-actions">
-            <button class="hero-cta" @click="scrollToAllCourses">
-              전체 과정 보기
-              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </button>
-            <div class="search-bar">
-              <svg class="search-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6" />
-                <path d="M14 14L18 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-              </svg>
-              <input
-                ref="searchInputEl"
-                v-model="searchQuery"
-                type="text"
-                class="search-input"
-                placeholder="과정 제목이나 키워드로 검색해보세요"
-              />
-            </div>
-          </div>
+          <button class="hero-cta" @click="scrollToAllCourses">
+            전체 과정 보기
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
         </div>
         <img :src="logoLockup" alt="SkillBridge" class="hero-logo" />
       </div>
@@ -129,7 +114,7 @@
 
         <!-- 빈 상태 -->
         <div v-else class="empty-state">
-          <p v-if="searchQuery.trim()">'{{ searchQuery }}'에 대한 검색 결과가 없습니다.</p>
+          <p v-if="courseStore.searchQuery.trim()">'{{ courseStore.searchQuery }}'에 대한 검색 결과가 없습니다.</p>
           <p v-else>해당 카테고리의 과정이 없습니다.</p>
         </div>
       </section>
@@ -190,12 +175,14 @@
     <footer class="site-footer">
       <div class="footer-inner">
         <div class="footer-brand">
-          <img :src="logoMark" alt="" class="footer-logo" />
-          <span class="footer-brand-name">SkillBridge</span>
-          <p class="footer-tagline">SKALA · B2B 리스킬링 플랫폼</p>
+          <img :src="logoLockup" alt="SkillBridge" class="footer-logo" />
+          <p class="footer-desc">
+            실무 데이터를 기반으로 구성된 과정으로 팀의 리스킬링을 지원하는
+            SKALA B2B 학습 플랫폼입니다.
+          </p>
         </div>
         <div class="footer-links">
-          <span class="footer-links-title">카테고리</span>
+          <span class="footer-links-title">Categories</span>
           <button
             v-for="cat in browsableCategories"
             :key="cat"
@@ -207,14 +194,15 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p class="footer-copyright">© 2026 SkillBridge · SKALA 5조</p>
-        <button class="scroll-top-btn" @click="scrollToTop" aria-label="맨 위로">
-          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path d="M10 15V5M5 9l5-5 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
+        <p class="footer-copyright">Copyright © 2026 SkillBridge · Designed &amp; Developed by SKALA 5조</p>
       </div>
     </footer>
+
+    <button class="scroll-top-btn" @click="scrollToTop" aria-label="맨 위로">
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M10 15V5M5 9l5-5 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
   </div>
 </template>
 
@@ -232,15 +220,15 @@ const { categories, loading } = courseStore
 const selectedCategory = computed(() => courseStore.selectedCategory)
 const popularCourses = computed(() => courseStore.popularCourses)
 const browsableCategories = computed(() => courseStore.categories.filter((c) => c !== '전체'))
-const searchQuery = ref('')
 
+// 검색은 헤더 컴포넌트가 담당 — 여기서는 store.searchQuery를 구독해서 결과만 필터링
 const filteredCourses = computed(() => {
   if (!Array.isArray(courseStore.courses)) return []
   let list = courseStore.courses
   if (selectedCategory.value !== '전체') {
     list = list.filter((c) => c.category === selectedCategory.value)
   }
-  const q = searchQuery.value.trim().toLowerCase()
+  const q = courseStore.searchQuery.trim().toLowerCase()
   if (q) {
     list = list.filter((c) =>
       (c.title || '').toLowerCase().includes(q) ||
@@ -256,11 +244,6 @@ function categoryCountLabel(cat) {
 }
 
 const allCoursesSection = ref(null)
-const searchInputEl = ref(null)
-
-function focusSearch() {
-  searchInputEl.value?.focus()
-}
 
 function selectCategory(cat) {
   courseStore.setCategory(cat)
@@ -286,12 +269,15 @@ function selectCategoryAndScroll(cat) {
   scrollToAllCourses()
 }
 
-// 검색어를 처음 입력하는 순간 결과 목록으로 자연스럽게 스크롤
-watch(searchQuery, (newVal, oldVal) => {
-  if (newVal.trim() && !oldVal.trim()) {
-    scrollToAllCourses()
+// 검색어를 처음 입력하는 순간(헤더에서 입력) 결과 목록으로 자연스럽게 스크롤
+watch(
+  () => courseStore.searchQuery,
+  (newVal, oldVal) => {
+    if (newVal.trim() && !oldVal.trim()) {
+      scrollToAllCourses()
+    }
   }
-})
+)
 
 onMounted(() => {
   courseStore.fetchCourses()
@@ -303,55 +289,6 @@ onMounted(() => {
   min-height: 100vh;
   background: #F6F7FA;
   font-family: "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-/* 히어로 액션 (전체 과정 보기 + 검색) */
-.hero-actions {
-  margin-top: 24px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-.hero-actions .hero-cta {
-  margin-top: 0;
-}
-
-/* 검색 */
-.search-bar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex: 1;
-  min-width: 220px;
-  max-width: 340px;
-}
-.search-icon {
-  position: absolute;
-  left: 14px;
-  width: 16px;
-  height: 16px;
-  color: #93A0AD;
-  pointer-events: none;
-}
-.search-input {
-  width: 100%;
-  padding: 11px 14px 11px 38px;
-  border: 1.5px solid #DDE3EB;
-  border-radius: 999px;
-  font-size: 13.5px;
-  font-family: inherit;
-  color: #0E1B2A;
-  background: #FFFFFF;
-  transition: border-color .15s ease, box-shadow .15s ease;
-}
-.search-input::placeholder {
-  color: #93A0AD;
-}
-.search-input:focus {
-  outline: none;
-  border-color: #1F5F92;
-  box-shadow: 0 0 0 3px rgba(31, 95, 146, .12);
 }
 
 /* 히어로 — 브랜드 가이드 표지의 header.hero 그리드(로고 + 1fr)를 그대로 적용, 로고는 오른쪽 */
@@ -707,11 +644,9 @@ onMounted(() => {
     max-width: none;
     margin: 0 auto;
   }
-  .hero-actions {
-    justify-content: center;
-  }
-  .search-bar {
-    max-width: 100%;
+  .hero-cta {
+    margin-left: auto;
+    margin-right: auto;
   }
   .category-tiles {
     grid-template-columns: repeat(2, 1fr);
@@ -924,20 +859,15 @@ onMounted(() => {
   max-width: 320px;
 }
 .footer-logo {
-  height: 32px;
+  height: 132px;
   width: auto;
   display: block;
+  margin-bottom: 14px;
 }
-.footer-brand-name {
-  display: inline-block;
-  margin-top: 10px;
-  font-size: 16px;
-  font-weight: 700;
-  color: #0E1B2A;
-}
-.footer-tagline {
-  margin: 8px 0 0;
-  font-size: 13px;
+.footer-desc {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
   color: #5C6673;
 }
 .footer-links {
@@ -969,26 +899,31 @@ onMounted(() => {
   margin: 0 auto;
   padding: 20px 24px 28px;
   border-top: 1px solid #DDE3EB;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  text-align: center;
 }
 .footer-copyright {
   margin: 0;
   font-size: 12.5px;
   color: #93A0AD;
 }
+
+/* 맨 위로 가기 — 화면에 고정되는 플로팅 버튼 */
 .scroll-top-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 30;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: 50%;
   background: #0A1F36;
   color: #FFFFFF;
   cursor: pointer;
+  box-shadow: 0 4px 14px rgba(10, 31, 54, .25);
   transition: background .15s ease, transform .15s ease;
 }
 .scroll-top-btn svg {

@@ -7,6 +7,7 @@ export const useCourseStore = defineStore('course', () => {
   const loading = ref(false)
   const error = ref(null)
   const selectedCategory = ref('전체')
+  const searchQuery = ref('')
 
   const categories = ['전체', '백엔드 개발', '프론트엔드 개발', 'DevOps · 인프라', '데이터 · AI', '보안']
 
@@ -90,6 +91,11 @@ export const useCourseStore = defineStore('course', () => {
     selectedCategory.value = cat
   }
 
+  // 검색창은 헤더 쪽 컴포넌트에서 입력받아 이 값을 쓰는 걸 가정 (메인페이지는 결과만 필터링)
+  function setSearchQuery(q) {
+    searchQuery.value = q
+  }
+
   // 실제 enrollmentCount 기준 상위 4개 (수강생 많은 순) — 가짜 평점/추천 로직 아님, 있는 데이터 그대로 정렬
   const popularCourses = computed(() => {
     return [...courses.value]
@@ -121,6 +127,7 @@ export const useCourseStore = defineStore('course', () => {
     error,
     categories,
     selectedCategory,
+    searchQuery,
     categoryLabelMap,
     categoryColorMap,
     categoryIconPathMap,
@@ -130,6 +137,7 @@ export const useCourseStore = defineStore('course', () => {
     normalizeCourse,
     fetchCourses,
     setCategory,
+    setSearchQuery,
     popularCourses,
     categoryCounts,
     totalCourses,
