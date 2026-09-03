@@ -10,7 +10,7 @@
       </router-link>
 
       <!-- 검색 -->
-      <form class="search-box" role="search" @submit.prevent="handleSearch">
+      <form v-if="showCourseSearch" class="search-box" role="search" @submit.prevent="handleSearch">
         <span class="search-icon">⌕</span>
         <input
           v-model="searchQuery"
@@ -70,6 +70,7 @@ const auth = useAuthStore()
 const courseStore = useCourseStore()
 const route = useRoute()
 const router = useRouter()
+const showCourseSearch = computed(() => route.meta.showCourseSearch === true)
 
 const searchQuery = computed({
   get: () => courseStore.searchQuery,
