@@ -2,8 +2,11 @@
   <header class="app-header">
     <div class="header-inner">
       <!-- 로고 -->
-      <router-link :to="{ name: 'Main' }" class="logo">
-        <img src="/skill-bridge-logo.png" alt="SkillBridge" class="logo-mark" />
+      <router-link :to="{ name: 'Main' }" class="logo" aria-label="SkillBridge 홈으로 이동">
+        <span class="logo-symbol" aria-hidden="true">
+          <img :src="logoLockup" alt="" class="logo-mark" />
+        </span>
+        <span class="logo-name">SkillBridge</span>
       </router-link>
 
       <!-- 검색 -->
@@ -23,7 +26,7 @@
           :to="{ name: 'CourseList' }"
           class="nav-link"
           :class="{ active: route.path.startsWith('/courses') }"
-          >학습경로</router-link
+          >강의 목록</router-link
         >
         <router-link
           v-if="auth.user?.role === 'STUDENT'"
@@ -61,6 +64,7 @@ import { computed, watch } from 'vue'
 import { useAuthStore } from '@/store/auth.js'
 import { useCourseStore } from '@/store/course.js'
 import { useRoute, useRouter } from 'vue-router'
+import logoLockup from '@/assets/logo-lockup.png'
 
 const auth = useAuthStore()
 const courseStore = useCourseStore()
@@ -115,11 +119,24 @@ watch(
   gap: 10px;
   flex-shrink: 0;
 }
+.logo-symbol {
+  display: block;
+  width: 42px;
+  height: 40px;
+  overflow: hidden;
+}
 .logo-mark {
-  height: 38px;
-  width: auto;
-  object-fit: contain;
-  flex-shrink: 0;
+  display: block;
+  width: 58px;
+  height: auto;
+  max-width: none;
+  transform: translate(-8px, 0);
+}
+.logo-name {
+  color: var(--navy-900);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
 .search-box {
@@ -236,6 +253,52 @@ watch(
 @media (max-width: 900px) {
   .search-box {
     display: none;
+  }
+
+  .logo-name {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-inner {
+    height: 68px;
+    padding: 0 16px;
+    gap: 14px;
+  }
+
+  .nav-links {
+    gap: 14px;
+  }
+
+  .header-actions {
+    margin-left: 0;
+  }
+
+  .user-name {
+    display: none;
+  }
+
+  .user-chip {
+    padding-right: 5px;
+  }
+
+  .header-actions .btn-sm {
+    padding: 8px 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-links {
+    margin-left: auto;
+  }
+
+  .nav-links .nav-link:not(.active) {
+    display: none;
+  }
+
+  .header-actions {
+    gap: 6px;
   }
 }
 </style>
