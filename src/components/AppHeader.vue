@@ -3,7 +3,7 @@
     <div class="header-inner">
       <!-- 로고 -->
       <router-link :to="{ name: 'Main' }" class="logo">
-        <img src="@/assets/images/logo/logo-transparent.png" alt="SkillBridge" class="logo-mark" />
+        <img src="@/assets/images/logo/logo-lockup.png" alt="SkillBridge" class="logo-mark" />
       </router-link>
 
       <!-- 검색 -->
