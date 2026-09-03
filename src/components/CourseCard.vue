@@ -32,7 +32,11 @@ const formattedEnrollment = computed(() =>
 </script>
 
 <template>
-  <article class="course-card">
+  <RouterLink
+    class="course-card"
+    :to="`/courses/${course.id}`"
+    :aria-label="`${course.title} 강의 상세 보기`"
+  >
     <div class="course-visual" :data-category="course.category">
       <span class="course-index">{{ cardIndex }}</span>
       <span class="visual-label">{{ categoryLabel }}</span>
@@ -60,7 +64,7 @@ const formattedEnrollment = computed(() =>
         </span>
       </div>
     </div>
-  </article>
+  </RouterLink>
 </template>
 
 <style scoped>
@@ -72,7 +76,9 @@ const formattedEnrollment = computed(() =>
   border: 1px solid var(--line);
   border-radius: 9px;
   background: var(--surface);
+  color: inherit;
   box-shadow: 0 1px 2px rgba(10, 31, 54, 0.025);
+  text-decoration: none;
   transition:
     transform 180ms ease,
     border-color 180ms ease,
