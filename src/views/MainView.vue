@@ -164,10 +164,20 @@
 
       <!-- 클로징 배너 -->
       <section class="closing-banner">
-        <p class="banner-eyebrow">TEAM RESKILLING</p>
-        <h2 class="banner-title">지금, 팀의 다음 역량을 채우세요</h2>
-        <p class="banner-desc">SkillBridge와 함께 실무 데이터 기반 학습을 시작해보세요.</p>
-        <button class="banner-cta" @click="scrollToAllCourses">과정 둘러보기</button>
+        <div class="banner-decor" aria-hidden="true">
+          <span class="banner-glow banner-glow-a"></span>
+          <span class="banner-glow banner-glow-b"></span>
+          <svg class="banner-chev" viewBox="0 0 400 400" aria-hidden="true">
+            <path d="M60 40 L200 160 L340 40" />
+            <path d="M60 220 L200 340 L340 220" />
+          </svg>
+        </div>
+        <div class="banner-content">
+          <p class="banner-eyebrow">TEAM RESKILLING</p>
+          <h2 class="banner-title">지금, 팀의 다음 역량을 채우세요</h2>
+          <p class="banner-desc">SkillBridge와 함께 실무 데이터 기반 학습을 시작해보세요.</p>
+          <button class="banner-cta" @click="scrollToAllCourses">과정 둘러보기</button>
+        </div>
       </section>
     </main>
 
@@ -797,11 +807,56 @@ onMounted(() => {
 
 /* 클로징 배너 */
 .closing-banner {
+  position: relative;
+  overflow: hidden;
   margin-top: 96px;
   padding: 64px 40px;
   border-radius: 24px;
   background: linear-gradient(120deg, #0A1F36 0%, #1F5F92 100%);
   text-align: center;
+}
+.banner-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.banner-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+}
+.banner-glow-a {
+  width: 280px;
+  height: 280px;
+  background: #14B88A;
+  opacity: .3;
+  top: -100px;
+  left: -80px;
+}
+.banner-glow-b {
+  width: 320px;
+  height: 320px;
+  background: #7C9BBC;
+  opacity: .2;
+  bottom: -140px;
+  right: -100px;
+}
+.banner-chev {
+  position: absolute;
+  top: 50%;
+  right: -40px;
+  width: 320px;
+  height: 320px;
+  transform: translateY(-50%);
+  fill: none;
+  stroke: #FFFFFF;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .08;
+}
+.banner-content {
+  position: relative;
 }
 .banner-eyebrow {
   margin: 0;
@@ -851,8 +906,8 @@ onMounted(() => {
   margin: 0 auto;
   padding: 56px 24px 40px;
   display: flex;
-  justify-content: space-between;
-  gap: 48px;
+  justify-content: flex-start;
+  gap: 88px;
   flex-wrap: wrap;
 }
 .footer-brand {
@@ -869,10 +924,12 @@ onMounted(() => {
   font-size: 13.5px;
   line-height: 1.6;
   color: #5C6673;
+  word-break: keep-all;
 }
 .footer-links {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 10px;
 }
 .footer-links-title {
@@ -882,13 +939,13 @@ onMounted(() => {
   margin-bottom: 2px;
 }
 .footer-link {
-  align-self: flex-start;
   padding: 0;
   border: none;
   background: none;
   font-size: 13.5px;
   color: #5C6673;
   cursor: pointer;
+  text-align: left;
   transition: color .15s ease;
 }
 .footer-link:hover {
@@ -898,7 +955,7 @@ onMounted(() => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px 24px 28px;
-  border-top: 1px solid #DDE3EB;
+  border-top: 1px solid rgba(20, 184, 138, .3);
   text-align: center;
 }
 .footer-copyright {
